@@ -19,15 +19,10 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array<int, string>
      */
-    protected $primaryKey = 'nro_usu';
     protected $fillable = [
-        'des_usu',
+        'name',
         'email',
         'password',
-        'id_sucursal',
-        'usuario_cobro_rapido',
-        'admin'
-
     ];
 
     /**
@@ -36,7 +31,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $hidden = [
-        'password'
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -44,9 +40,10 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array<string, string>
      */
-    // protected $casts = [
-    //     'password' => 'hashed'
-    // ];
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
     public function getJWTIdentifier()
     {
@@ -56,34 +53,5 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    public function permiso()
-    {
-        return $this->belongsTo(Permiso::class, 'id_permisos', 'id');
-    }
-
-    public function sucursal()
-    {
-        return $this->belongsTo(Sucursal::class, 'id_sucursal', 'id');
-    }
-
-    public function permisos()
-    {
-        return $this->belongsToMany(PermisoUsuario::class, 'permisos_usuarios', 'nro_usu', 'id_permisos')->withTimestamps();
-    }
-
-    public function permisosUsuarios()
-    {
-        return $this->belongsToMany(Permiso::class, 'permisos_usuarios', 'nro_usu', 'id_permisos');
-    }
-
-    public function chequearPermiso($permiso)
-    {
-        $permisosUsuarioRela = $this->permisosUsuarios()->get()->toArray();
-        $codigos = array_map(function ($permiso) {
-            return $permiso['permiso']['codigo'];
-        }, $permisosUsuarioRela);
-        return in_array($permiso, $codigos);
     }
 }

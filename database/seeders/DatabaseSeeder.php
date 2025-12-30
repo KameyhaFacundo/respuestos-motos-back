@@ -18,8 +18,10 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        $this->call(ListaVentaSeeder::class);
-        $this->call(RubroSeeder::class);
-        $this->call(PermisoSeeder::class);
+
+        // Seeders comentados - agregar según necesidad
+        // $this->call(ListaVentaSeeder::class);
+        // $this->call(RubroSeeder::class);
+        // $this->call(PermisoSeeder::class);
     }
 }
